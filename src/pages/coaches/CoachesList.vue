@@ -5,7 +5,7 @@
     <section>
         <base-card>
             <div class="controls">
-                <base-button mode="outline">Refresh</base-button>
+                <base-button mode="outline" @click="test">Refresh</base-button>
                 <base-button :link="true" to="/register">Register as Coach</base-button>
             </div>
             <ul v-if="hasCoaches">
@@ -65,6 +65,9 @@ export default {
     methods:{
         setFilter(filters){ 
             this.filters = filters;
+        },
+        test(){
+            console.log();
         }
     },
 }

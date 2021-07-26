@@ -3,15 +3,20 @@ import coachModule from './modules/coach.js';
 import requestModule from './modules/request.js';
 
 const store = createStore({
-    modules:{
+    modules: {
         coach: coachModule,
         request: requestModule
     },
-    state(){
+    state() {
         return {
-
+            userId:'c3'
         };
     },
+    getters:{
+        getUserId(state){
+            return state.userId;
+        }
+    }
 });
 
 export default store;

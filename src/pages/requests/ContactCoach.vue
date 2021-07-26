@@ -31,7 +31,15 @@ export default {
                 this.formIsValid = false;
                 return;
             }
-            console.log(this.email + ": " + this.msg);
+            const msgObj = {
+                id: new Date().toISOString(),
+                coachId: this.$route.params.id,
+                email:this.email,
+                msg: this.msg
+            }
+            
+            this.$store.dispatch('request/addNewRequest', msgObj);
+            this.$router.replace('/coaches');
         }
     }
 }

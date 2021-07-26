@@ -102,7 +102,7 @@ export default {
             }
 
             const data = {
-                id: new Date().toISOString(),
+                id: this.$store.getters.getUserId,
                 firstName: this.formData.firstName.val,
                 lastName: this.formData.lastName.val,
                 areas: this.formData.areas.val,
