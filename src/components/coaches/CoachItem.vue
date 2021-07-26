@@ -15,9 +15,6 @@
 <script>
 export default {
     props: ['id', 'firstName', 'lastName', 'rate', 'areas'],
-    mounted(){
-        console.log(this.areas);
-    }
 }
 </script>
 

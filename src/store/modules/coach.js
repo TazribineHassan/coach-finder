@@ -31,5 +31,15 @@ export default {
         getHasCoaches(state){
             return state.coaches.length > 0;
         }
+    },
+    mutations:{
+      addNewCoach(state, paylod){
+          state.coaches.push(paylod);
+      }
+    },
+    actions:{
+      addCoach(context, paylod){
+        context.commit('addNewCoach', paylod);
+      }
     }
 };
