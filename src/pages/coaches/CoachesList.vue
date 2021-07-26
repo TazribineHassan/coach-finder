@@ -3,28 +3,32 @@
         FILTER
     </section>
     <section>
-        <div class="controls">
-            <button>Refresh</button>
-            <router-link to="/register">Register</router-link>
-        </div>
-        <ul v-if="hasCoaches">
-            <coach-item v-for="coach in getAllCoaches"
-            :key="coach.id"
-            :id="coach.id"
-            :first-name="coach.firstName"
-            :last-name="coach.lastName"
-            :area="coach.areas"
-            :rate="coach.hourlyRate"></coach-item>
-        </ul>
-        <h3 v-else>No data found</h3>
+        <base-card>
+            <div class="controls">
+                <base-button mode="outline">Refresh</base-button>
+                <base-button :link="true" to="/register">Register</base-button>
+            </div>
+            <ul v-if="hasCoaches">
+                <coach-item v-for="coach in getAllCoaches"
+                :key="coach.id"
+                :id="coach.id"
+                :first-name="coach.firstName"
+                :last-name="coach.lastName"
+                :areas="coach.areas"
+                :rate="coach.hourlyRate"></coach-item>
+            </ul>
+            <h3 v-else>No data found</h3>
+        </base-card>
     </section>
 </template>
 
 <script> 
 import CoachItem from '../../components/coaches/CoachItem.vue';
+import BaseButton from '../../components/UI/BaseButton.vue';
 export default {
     components:{
         CoachItem,
+        BaseButton,
     },
     computed:{
         getAllCoaches(){

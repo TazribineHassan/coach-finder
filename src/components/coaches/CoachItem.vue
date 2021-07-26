@@ -3,11 +3,11 @@
         <h3> {{ firstName + " " + lastName }} </h3>
         <h4>${{ rate }}/hour </h4>
         <div>
-            <span v-for="area in areas" :key="area"> {{area}} </span>
+            <base-badge v-for="area in areas" :key="area" :title="area" :type="area"></base-badge>
         </div>
-        <div class="actoins">
-            <router-link :to="'/coaches/' + id + '/contact'">Contact</router-link>
-            <router-link :to="'/coaches/' + id">View Details</router-link>
+        <div class="actions">
+            <base-button :link="true" mode="outline" :to="'/coaches/' + id + '/contact'">Contact</base-button>
+            <base-button :link="true"  :to="'/coaches/' + id">View Details</base-button>
         </div>
     </li>
 </template>
@@ -15,6 +15,9 @@
 <script>
 export default {
     props: ['id', 'firstName', 'lastName', 'rate', 'areas'],
+    mounted(){
+        console.log(this.areas);
+    }
 }
 </script>
 
