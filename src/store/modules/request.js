@@ -15,14 +15,16 @@ export default {
     },
     actions: {
         async addNewRequest(context, paylod) {
-            await fetch(`https://coach-finder-37657-default-rtdb.firebaseio.com/requests.json`, {
+            
+            await fetch(`https://coach-finder-37657-default-rtdb.firebaseio.com/requests.json` , {
                 method:'POST',
                 body:JSON.stringify(paylod)
             });
             context.commit('addRequest', paylod);
         },
         async getAllRequests(context){
-            const response = await fetch(`https://coach-finder-37657-default-rtdb.firebaseio.com/requests.json`);
+            const token = context.rootGetters.getToken;
+            const response = await fetch(`https://coach-finder-37657-default-rtdb.firebaseio.com/requests.json?auth=` + token);
             const data = await response.json();
             if(!response.ok){
                 throw new Error(data.message || 'Failed to fetch!');

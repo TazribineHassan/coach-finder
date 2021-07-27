@@ -13,6 +13,9 @@ export default {
     components: { 
       TheHeader 
     },
+    created(){
+        this.$store.dispatch('login');
+    }
 }
 </script>
 
@@ -40,7 +43,7 @@ export default {
         opacity: 0;
         transform: translateY(30px);
     }
-    
+
     .route-leave-active{
         transition: all 0.3s ease-out;
     }    

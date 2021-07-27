@@ -27,7 +27,8 @@ export default {
     actions:{
       async addCoach(context, paylod){
         const userId = context.rootGetters.getUserId;
-        const response = await fetch(`https://coach-finder-37657-default-rtdb.firebaseio.com/coaches/${userId}.json`, {
+        const token = context.rootGetters.getToken;
+        const response = await fetch(`https://coach-finder-37657-default-rtdb.firebaseio.com/coaches/${userId}.json?auth=` + token, {
           method:'PUT',
           body:JSON.stringify(paylod)
         });

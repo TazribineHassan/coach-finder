@@ -1,5 +1,6 @@
 <template>
     <div>
+        
         <base-dialog :show="!!error" title="An error occured" @close="exitModal">
             <p>{{error}}</p>
         </base-dialog>
@@ -10,7 +11,8 @@
             <base-card>
                 <div class="controls">
                     <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
-                    <base-button v-if="!isCoaches && !isLoading" :link="true" to="/register">Register as Coach</base-button>
+                    <base-button v-if="!isLoggedIn" :link="true" to="/auth?redirect=register">Login to register as coach</base-button>
+                    <base-button v-if="!isCoaches && !isLoading && isLoggedIn" :link="true" to="/register">Register as Coach</base-button>
                 </div>
                 <div v-if="isLoading">
                     <base-spinner></base-spinner>
@@ -74,6 +76,9 @@ export default {
         isCoaches(){
             return this.$store.getters['coach/isUserIdExist'];
         },
+        isLoggedIn(){
+            return this.$store.getters.isAuth;
+        }
 
     },
     methods:{
