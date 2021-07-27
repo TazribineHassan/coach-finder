@@ -1,4 +1,8 @@
 <template>
+  <div>
+    <base-dialog :show="!!error" title="An error occured" @close="exitModal">
+        <p>{{error}}</p>
+    </base-dialog>
     <section>
         <base-card>
         <header>
@@ -7,7 +11,7 @@
           <div v-if="isLoading">
             <base-spinner></base-spinner>
           </div>
-        <ul v-if="hasRequests">
+        <ul v-else-if="hasRequests && !isLoading">
             <request-item v-for="req in getAllRequests" 
             :key="req.id" 
             :email="req.email"
@@ -16,6 +20,7 @@
         <h3 v-else>You haven't received any requests yet!</h3>
         </base-card>
     </section>
+  </div>
 </template>
 
 <script>
@@ -23,7 +28,8 @@ import RequestItem from '../../components/requests/RequestItem.vue'
 export default {
     data(){
       return {
-        isLoading:false
+        isLoading:false,
+        error:null
       }
     },
     components:{
@@ -40,8 +46,15 @@ export default {
     methods:{
       async loadRequests(){
         this.isLoading = true;
-        await this.$store.dispatch('request/getAllRequests');
+        try {
+          await this.$store.dispatch('request/getAllRequests');
+        } catch (err) {
+          this.error = err.message || 'An error occured!';
+        }
         this.isLoading = false;
+      },
+      exitModal(){
+        this.error = null;
       }
     },
     created(){
