@@ -1,14 +1,20 @@
 <template>
+    <base-dialog :show="!!error" title="An error occured" @close="exitModal">
+        <p>{{error}}</p>
+    </base-dialog>
     <section>
             <coach-filter @change-filter="setFilter"></coach-filter>
     </section>
     <section>
         <base-card>
             <div class="controls">
-                <base-button mode="outline" @click="test">Refresh</base-button>
-                <base-button :link="true" to="/register">Register as Coach</base-button>
+                <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
+                <base-button v-if="!isCoaches && !isLoading" :link="true" to="/register">Register as Coach</base-button>
             </div>
-            <ul v-if="hasCoaches">
+            <div v-if="isLoading">
+                <base-spinner></base-spinner>
+            </div>
+            <ul v-else-if="hasCoaches">
                 <coach-item v-for="coach in getAllCoaches"
                 :key="coach.id"
                 :id="coach.id"
@@ -17,7 +23,7 @@
                 :areas="coach.areas"
                 :rate="coach.hourlyRate"></coach-item>
             </ul>
-            <h3 v-else>No data found</h3>
+            <!-- <h3 v-else>No data found</h3> -->
         </base-card>
     </section>
 </template>
@@ -38,7 +44,9 @@ export default {
                 frontend:true,
                 backend:true,
                 career:true
-            }
+            },
+            isLoading:false,
+            error:null
         }
     },
     computed:{
@@ -59,17 +67,37 @@ export default {
             });
         },
         hasCoaches(){
-            return this.$store.getters['coach/getHasCoaches'];
+            return !this.isLoading && this.$store.getters['coach/getHasCoaches'];
+        },        
+        isCoaches(){
+            return this.$store.getters['coach/isUserIdExist'];
         },
+
     },
     methods:{
         setFilter(filters){ 
             this.filters = filters;
         },
-        test(){
-            console.log();
+        async loadCoaches(){
+
+            this.isLoading = true;
+            
+            try{
+                await this.$store.dispatch('coach/loadCoaches');
+            }catch(err){
+                this.error = err.message || 'Something went wrong';
+                console.log(this.error);
+            }
+
+            this.isLoading = false;
+        },
+        exitModal(){
+            this.error = null;
         }
     },
+    created(){
+        this.loadCoaches();
+    }
 }
 </script>
 
