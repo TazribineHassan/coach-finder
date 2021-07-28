@@ -10,7 +10,7 @@
             <base-card>
                 <header>
                     <h2> Interested Reach out now </h2>
-                    <base-button :link="true" to="/contact">Contact</base-button>
+                    <base-button :link="true" :to="$route.params.id + '/contact'">Contact</base-button>
                 </header>
                 <router-view></router-view>
             </base-card>

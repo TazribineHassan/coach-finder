@@ -34,12 +34,10 @@
 
 <script> 
 import CoachItem from '../../components/coaches/CoachItem.vue';
-import BaseButton from '../../components/UI/BaseButton.vue';
 import CoachFilter from '../../components/coaches/CoachFilter.vue';
 export default {
     components:{
         CoachItem,
-        BaseButton,
         CoachFilter
     },
     data(){
@@ -66,7 +64,6 @@ export default {
                 if(this.filters.career && c.areas.includes('career')){
                     return true;
                 }
-                console.log(coaches);
                 return false;
             });
         },

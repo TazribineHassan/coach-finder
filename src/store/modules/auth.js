@@ -1,16 +1,15 @@
+let timer;
 export default {
     state() {
         return {
             userId: null,
             token: null,
-            expireIn: null
         };
     },
     mutations: {
         setUserCredentials(state, paylod) {
             state.userId = paylod.userId;
             state.token = paylod.token;
-            state.expireIn = paylod.expireIn;
         },
     },
     actions: {
@@ -34,35 +33,58 @@ export default {
             if (!response.ok) {
                 throw new Error(data.message || 'Authentcation fialed');
             }
+
+            //set timer
+            const expireAt = +data.expiresIn * 1000;
+            const expirationDate = expireAt + new Date().getTime();
+
             // store data into localStorage
             localStorage.setItem('token', data.idToken);
             localStorage.setItem('userId', data.localId);
+            localStorage.setItem('expiresIn', expirationDate);
+
+            timer = setTimeout(function(){
+                context.dispatch('logout');
+            }, expireAt);
+
             // save the data into the vue x store
             context.commit('setUserCredentials', {
                 userId: data.localId,
                 token: data.idToken,
-                expireIn: data.expiresIn
             });
         },
         logout(context) {
             localStorage.removeItem('token');
             localStorage.removeItem('userId');
+            localStorage.removeItem('expiresIn');
+            
+            clearTimeout(timer);
+
             context.commit('setUserCredentials', {
                 userId: null,
                 token: null,
-                expireIn: null
             });
         },
         login(context) {
 
             const token = localStorage.getItem('token');
             const userId = localStorage.getItem('userId');
+            const expiresIn = localStorage.getItem('expiresIn');
+            
+            const timeLeft = +expiresIn - new Date().getTime();
+
+            if( timeLeft < 0){
+                return;
+            }
+            
+            timer = setTimeout(function(){
+                context.dispatch('logout');
+            }, timeLeft);
 
             if (token && userId) {
                 context.commit('setUserCredentials', {
                     userId: userId,
                     token: token,
-                    expireIn: null
                 });
             }
         }
